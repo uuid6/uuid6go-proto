@@ -83,7 +83,9 @@ func (u UUIDv7) Var() uint16 {
 	return tmp
 }
 
-// Subseq
+// Subseq returns The remaining 62 bits which MAY be allocated to any combination of
+// additional sub-section precision, sequence counter, or pseudo-
+// random data.
 func (u UUIDv7) Subseq() uint64 {
 	bytes := [16]byte(u)
 	var tmp = toUint64(bytes[8:16])
@@ -91,6 +93,7 @@ func (u UUIDv7) Subseq() uint64 {
 	return tmp
 }
 
+//SubsecA returns 12-bits allocated to sub-section precision values
 func (u UUIDv7) SubsecA() uint16 {
 	bytes := [16]byte(u)
 	var tmp uint16 = binary.BigEndian.Uint16(bytes[4:6])
