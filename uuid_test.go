@@ -86,62 +86,62 @@ func TestUUIDv7UnixTS(t *testing.T) {
 	}
 }
 
-func TestUUIDv7Subseq(t *testing.T) {
+func TestUUIDv7Random(t *testing.T) {
 	test, _ := UUIDv7FromBytes([]byte{0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF})
 
-	if test.Subseq() != 4611686018427387903 {
-		t.Fatal("Expected Subseq to be 4611686018427387903, got ", test.Subseq(), " instead")
+	if test.Random() != 4611686018427387903 {
+		t.Fatal("Expected Random to be 4611686018427387903, got ", test.Random(), " instead")
 	}
 
 	test, _ = UUIDv7FromBytes([]byte{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00})
 
-	if test.Subseq() != 0 {
-		t.Fatal("Expected Subseq to be 0, got ", test.Subseq(), " instead")
+	if test.Random() != 0 {
+		t.Fatal("Expected Random to be 0, got ", test.Random(), " instead")
 	}
 
 	test, _ = UUIDv7FromBytes([]byte{0x01, 0xE5, 0x30, 0xE0, 0xF0, 0xFF, 0xFF, 0xFF, 0x3F, 0xFF, 0xFF, 0xFF, 0xFC, 0xCB, 0xFF, 0xFF})
 
-	if test.Subseq() != 4611686018373648383 {
-		t.Fatal("Expected Subseq to be 4611686018373648383, got ", test.Subseq(), " instead")
+	if test.Random() != 4611686018373648383 {
+		t.Fatal("Expected Random to be 4611686018373648383, got ", test.Random(), " instead")
 	}
 }
 
-func TestUUIDv7SubsecA(t *testing.T) {
+func TestUUIDv7Msec(t *testing.T) {
 	test, _ := UUIDv7FromBytes([]byte{0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF})
 
-	if test.SubsecA() != 4095 {
-		t.Fatal("Expected SubsecA to be 4095, got ", test.SubsecA(), " instead")
+	if test.Msec() != 4095 {
+		t.Fatal("Expected Msec to be 4095, got ", test.Msec(), " instead")
 	}
 
 	test, _ = UUIDv7FromBytes([]byte{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00})
 
-	if test.SubsecA() != 0 {
-		t.Fatal("Expected SubsecA to be 0, got ", test.SubsecA(), " instead")
+	if test.Msec() != 0 {
+		t.Fatal("Expected Msec to be 0, got ", test.Msec(), " instead")
 	}
 
 	test, _ = UUIDv7FromBytes([]byte{0x01, 0xE5, 0x30, 0xE0, 0xF4, 0xD2, 0xFF, 0xFF, 0x3F, 0xFF, 0xFF, 0xFF, 0xFC, 0xCB, 0xFF, 0xFF})
 
-	if test.SubsecA() != 1234 {
-		t.Fatal("Expected SubsecA to be 1234, got ", test.SubsecA(), " instead")
+	if test.Msec() != 1234 {
+		t.Fatal("Expected Msec to be 1234, got ", test.Msec(), " instead")
 	}
 }
 
-func TestUUIDv7SubsecB(t *testing.T) {
+func TestUUIDv7Subsec(t *testing.T) {
 	test, _ := UUIDv7FromBytes([]byte{0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF})
 
-	if test.SubsecB() != 4095 {
-		t.Fatal("Expected SubsecB to be 4095, got ", test.SubsecB(), " instead")
+	if test.Subsec() != 4095 {
+		t.Fatal("Expected Subsec to be 4095, got ", test.Subsec(), " instead")
 	}
 
 	test, _ = UUIDv7FromBytes([]byte{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00})
 
-	if test.SubsecB() != 0 {
-		t.Fatal("Expected SubsecB to be 0, got ", test.SubsecB(), " instead")
+	if test.Subsec() != 0 {
+		t.Fatal("Expected Subsec to be 0, got ", test.Subsec(), " instead")
 	}
 
 	test, _ = UUIDv7FromBytes([]byte{0x01, 0xE5, 0x30, 0xE0, 0xF4, 0xD2, 0xF4, 0xD2, 0x3F, 0xFF, 0xFF, 0xFF, 0xFC, 0xCB, 0xFF, 0xFF})
 
-	if test.SubsecB() != 1234 {
-		t.Fatal("Expected SubsecB to be 1234, got ", test.SubsecB(), " instead")
+	if test.Subsec() != 1234 {
+		t.Fatal("Expected Subsec to be 1234, got ", test.Subsec(), " instead")
 	}
 }
