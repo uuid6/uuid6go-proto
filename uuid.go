@@ -59,13 +59,15 @@ func UUIDv8FromBytes(b []byte) (uuid UUIDv8, err error) {
 	return UUIDv8(utmp), err
 }
 
+// UnixTS returns unix epoch stored in the struct without millisecond precision
 func (u UUIDv7) UnixTS() uint64 {
 	bytes := [16]byte(u)
-	var tmp uint64 = binary.BigEndian.Uint64(bytes[0:4])
+	tmp := toUint64(bytes[0:5])
 	tmp = tmp >> 4 //We are off by 4 last bits of the byte there.
 	return tmp
 }
 
+// Ver returns a version of UUID, 07 in this case
 func (u UUIDv7) Ver() uint16 {
 	bytes := [16]byte(u)
 	var tmp uint16 = uint16(bytes[6:7][0])
@@ -73,6 +75,7 @@ func (u UUIDv7) Ver() uint16 {
 	return tmp
 }
 
+// Var doing something described in the draft, but I don't know what
 func (u UUIDv7) Var() uint16 {
 	bytes := [16]byte(u)
 	var tmp uint16 = uint16(bytes[8:9][0])
@@ -80,23 +83,24 @@ func (u UUIDv7) Var() uint16 {
 	return tmp
 }
 
+// Subseq
 func (u UUIDv7) Subseq() uint64 {
 	bytes := [16]byte(u)
-	var tmp uint64 = binary.BigEndian.Uint64(bytes[8:15])
+	var tmp = toUint64(bytes[8:16])
 	tmp = tmp & 0b0011_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111
 	return tmp
 }
 
 func (u UUIDv7) SubsecA() uint16 {
 	bytes := [16]byte(u)
-	var tmp uint16 = binary.BigEndian.Uint16(bytes[4:5])
+	var tmp uint16 = binary.BigEndian.Uint16(bytes[4:6])
 	tmp = tmp & 0b0000_1111_1111_1111
 	return tmp
 }
 
 func (u UUIDv7) SubsecB() uint16 {
 	bytes := [16]byte(u)
-	var tmp uint16 = binary.BigEndian.Uint16(bytes[6:7])
+	var tmp uint16 = binary.BigEndian.Uint16(bytes[6:8])
 	tmp = tmp & 0b0000_1111_1111_1111
 	return tmp
 }
@@ -108,4 +112,10 @@ func (uuid *uuidBase) UnmarshalBinary(data []byte) error {
 	}
 	copy(uuid[:], data)
 	return nil
+}
+
+func toUint64(data []byte) uint64 {
+	var arr [8]byte
+	copy(arr[len(arr)-len(data):], data)
+	return binary.BigEndian.Uint64(arr[:])
 }
