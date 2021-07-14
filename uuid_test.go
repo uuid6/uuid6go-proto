@@ -22,7 +22,7 @@ func TestUUIDv7FromBytes(t *testing.T) {
 
 	var byteArray [16]byte = [16]byte(temp)
 	if byteArray != [16]byte{0x16, 0x16, 0x16, 0x16, 0x16, 0x16, 0x16, 0x16, 0x16, 0x16, 0x16, 0x16, 0x16, 0x16, 0x16, 0x16} {
-		t.Fatal("Somehow byte array is changed after a marshaling", err)
+		t.Fatal("Somehow byte array is changed after a marshaling")
 	}
 }
 
