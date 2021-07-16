@@ -1,6 +1,10 @@
-# uuid6go-proto
+# UUIDv6, 7 and 8
 
-Implementation of UUIDv6, v7 and v8 in Golang. Nice, awesome, machine-sortable and absolutely unique!
+Welcome new contestors, UUIDv6, v7 and v8 in Golang. Nice, awesome, machine-sortable and absolutely unique!
+
+ - UUIDv6 - a highly compatible guy.
+ - UUIDv7 - all brand new and shinny. Very awesome.
+ - UUIDv8 - strange and implementration specific, to fulfill everyone's dreams and requirements.
 
 For more information visit https://datatracker.ietf.org/doc/draft-peabody-dispatch-new-uuid-format/
 
