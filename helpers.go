@@ -6,21 +6,6 @@ import (
 	"time"
 )
 
-// indexer returns updated index of a bit in the array of bits. It skips bits 48-51 and 64,65
-// for those containt information about Version and Variant and can't be populated by the
-// precision bits. It also omits first 36 bits of timestamp at the beginning of the GUID
-func indexer(input int) int {
-	out := 35 + input //Skip the TS block and start counting right after ts block
-	if input > 11 {   //If we are bumbing into a ver block, skip it
-		out += 4
-	}
-
-	if input > 23 { //If we are bumping into a var block
-		out += 2
-	}
-	return out
-}
-
 // encodeDecimal takes nanoseconds and converts them to the binary-encoded arbitrary-precision
 // byte array.
 func encodeDecimal(sec float64, bits int) (val []byte, err error) {
@@ -38,6 +23,15 @@ func toUint64(data []byte) uint64 {
 	var arr [8]byte
 	copy(arr[len(arr)-len(data):], data)
 	return binary.BigEndian.Uint64(arr[:])
+}
+
+// toUint64 converts []byte to uint64
+func toBytes(data uint64) []byte {
+	i := int64(-123456789)
+
+	b := make([]byte, 8)
+	binary.LittleEndian.PutUint64(b, uint64(i))
+	return b
 }
 
 func timeToBytes(t time.Time) []byte {
