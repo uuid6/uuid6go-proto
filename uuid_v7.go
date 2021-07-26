@@ -94,7 +94,6 @@ bytes      	12              13              14              15
 // UUIDv7FromBytes creates a new UUIDv7 from a slice of bytes and returns an error, if an array length does not equal 16.
 func (u *UUIDv7Generator) Next() (uuid UUIDv7) {
 	var retval UUIDv7
-
 	//Getting current time
 	then := time.Now()
 	tsBytes := timeToBytes(then)
@@ -103,6 +102,7 @@ func (u *UUIDv7Generator) Next() (uuid UUIDv7) {
 	for i := 0; i < 36; i++ {
 		retval = retval.setBit(35-i, getBit(tsBytes, 63-i))
 	}
+	u.currentPosition = 36
 
 	//Getting nanoseconds
 	var precisitonBytes []byte
@@ -113,7 +113,7 @@ func (u *UUIDv7Generator) Next() (uuid UUIDv7) {
 	}
 
 	//Adding sub-second precision length
-	u.currentPosition = retval.stack(u.currentPosition, precisitonBytes, u.SubsecondPrecisionLength)
+	retval, u.currentPosition = retval.stack(u.currentPosition, precisitonBytes, u.SubsecondPrecisionLength)
 
 	//Checks if we are going to use counter at all, or we don't need it
 	useCounter := false
@@ -134,13 +134,13 @@ func (u *UUIDv7Generator) Next() (uuid UUIDv7) {
 	//If we are using the counter, it goes right after precision bytes
 	if useCounter {
 		//counter bits
-		u.currentPosition = retval.stack(u.currentPosition, toBytes(u.counter), u.CounterPrecisionBits)
+		retval, u.currentPosition = retval.stack(u.currentPosition, toBytes(u.counter), u.CounterPrecisionBits)
 
 	}
 
 	//Adding node data after bytes
 	if u.NodePrecisionBits != 0 {
-		u.currentPosition = retval.stack(u.currentPosition, toBytes(u.Node), u.NodePrecisionBits)
+		retval, u.currentPosition = retval.stack(u.currentPosition, toBytes(u.Node), u.NodePrecisionBits)
 	}
 
 	//Create some random crypto data for the tail end

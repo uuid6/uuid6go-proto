@@ -55,15 +55,18 @@ func indexer(input int) int {
 }
 
 // stack adds a chunk of bits, encoded as []byte at the selected started position, with respect to the timestamp, version and variant values.
-func (b UUIDv7) stack(startingPosition int, value []byte, length int) int {
-	return (uuidBase(b)).stack(startingPosition, value, length)
+func (b UUIDv7) stack(startingPosition int, value []byte, length int) (UUIDv7, int) {
+	rettype, retval := (uuidBase(b)).stack(startingPosition, value, length)
+	return UUIDv7(rettype), retval
 }
 
 // stack adds a chunk of bits, encoded as []byte at the selected started position, with respect to the timestamp, version and variant values.
-func (b uuidBase) stack(startingPosition int, value []byte, length int) int {
-	for i := startingPosition; i < length; i++ {
-		bit := getBit(value, (len(value)*8-1)-i)
+func (b uuidBase) stack(startingPosition int, value []byte, length int) (uuidBase, int) {
+	cnt := 0
+	for i := startingPosition; i < startingPosition+length; i++ {
+		bit := getBit(value, (len(value)*8-1)-cnt)
 		b = b.setBit(indexer(i), bit)
+		cnt++
 	}
-	return startingPosition + length
+	return b, startingPosition + length
 }
