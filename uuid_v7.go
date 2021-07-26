@@ -116,7 +116,6 @@ func (u *UUIDv7Generator) Next() (uuid UUIDv7) {
 	retval, u.currentPosition = retval.stack(u.currentPosition, precisitonBytes, u.SubsecondPrecisionLength)
 
 	//Checks if we are going to use counter at all, or we don't need it
-	useCounter := false
 
 	//If we are using precision and bytes on the last tick equal current bytes,
 	//use counter and append it.
@@ -124,7 +123,6 @@ func (u *UUIDv7Generator) Next() (uuid UUIDv7) {
 	if u.SubsecondPrecisionLength != 0 {
 		if bytes.Equal(u.currentTs, precisitonBytes) {
 			u.counter++
-			useCounter = true
 		} else {
 			u.counter = 0
 		}
@@ -132,7 +130,7 @@ func (u *UUIDv7Generator) Next() (uuid UUIDv7) {
 	}
 
 	//If we are using the counter, it goes right after precision bytes
-	if useCounter {
+	if u.CounterPrecisionBits != 0 {
 		//counter bits
 		retval, u.currentPosition = retval.stack(u.currentPosition, toBytes(u.counter), u.CounterPrecisionBits)
 
