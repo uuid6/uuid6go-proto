@@ -25,6 +25,14 @@ func (u uuidBase) ToMicrosoftString() string {
 	return fmt.Sprintf("{%X-%X-%X-%X-%X}", u[0:5], u[5:7], u[7:9], u[9:11], u[11:16])
 }
 
+func (u uuidBase) ToBitArray() []bool {
+	ret := make([]bool, 128)
+	for i := 0; i < 128; i++ {
+		ret[i] = getBit(u[:], i)
+	}
+	return ret
+}
+
 // ToBinaryString returns UUID as a string of binary digits grouped in 8
 func (u uuidBase) ToBinaryString() string {
 	var ret string

@@ -184,3 +184,7 @@ func (u UUIDv7) ToMicrosoftString() string {
 func (u UUIDv7) ToBinaryString() string {
 	return uuidBase(u).ToBinaryString()
 }
+
+func (u UUIDv7) ToBitArray() []bool {
+	return uuidBase(u).ToBitArray()
+}
