@@ -147,7 +147,7 @@ func (u *UUIDv7Generator) Next() (uuid UUIDv7) {
 
 	//Copy crypto data from the array to the end of the GUID
 	cnt := 0
-	limit := indexer(u.currentPosition)
+	limit := absoluteIndexer(u.currentPosition)
 	for i := 127; i > limit; i-- {
 		//Ommiting bits 48-51 and 64, 65. Those contain version and variant information
 		if i == 48 || i == 49 || i == 50 || i == 51 || i == 64 || i == 65 {

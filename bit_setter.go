@@ -54,6 +54,21 @@ func indexer(input int) int {
 	return out
 }
 
+// absoluteIndexer returns updated index of a bit in the array of bits. It skips bits 48-51 and 64,65
+// for those containt information about Version and Variant and can't be populated by the
+// precision bits. It DOES NOT omit first 36 bits of timestamp at the beginning of the GUID
+func absoluteIndexer(input int) int {
+	out := input       //Skip the TS block and start counting right after ts block
+	if input > 35+11 { //If we are bumbing into a ver block, skip it
+		out += 4
+	}
+
+	if input > 35+23 { //If we are bumping into a var block
+		out += 2
+	}
+	return out
+}
+
 // stack adds a chunk of bits, encoded as []byte at the selected started position, with respect to the timestamp, version and variant values.
 func (b UUIDv7) stack(startingPosition int, value []byte, length int) (UUIDv7, int) {
 	rettype, retval := (uuidBase(b)).stack(startingPosition, value, length)
@@ -65,7 +80,7 @@ func (b uuidBase) stack(startingPosition int, value []byte, length int) (uuidBas
 	cnt := 0
 	for i := startingPosition; i < startingPosition+length; i++ {
 		bit := getBit(value, (len(value)*8-1)-cnt)
-		b = b.setBit(indexer(i), bit)
+		b = b.setBit(absoluteIndexer(i), bit)
 		cnt++
 	}
 	return b, startingPosition + length
