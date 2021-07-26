@@ -16,8 +16,8 @@ type UUIDv7 uuidBase
 type UUIDv7Generator struct {
 	SubsecondPrecisionLength int
 
-	NodePrecisonBits int
-	Node             uint64
+	NodePrecisionBits int
+	Node              uint64
 
 	CounterPrecisionBits int
 
@@ -139,8 +139,8 @@ func (u *UUIDv7Generator) Next() (uuid UUIDv7) {
 	}
 
 	//Adding node data after bytes
-	if u.NodePrecisonBits != 0 {
-		u.currentPosition = retval.stack(u.currentPosition, toBytes(u.Node), u.NodePrecisonBits)
+	if u.NodePrecisionBits != 0 {
+		u.currentPosition = retval.stack(u.currentPosition, toBytes(u.Node), u.NodePrecisionBits)
 	}
 
 	//Create some random crypto data for the tail end
