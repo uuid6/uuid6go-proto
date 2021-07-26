@@ -27,10 +27,8 @@ func toUint64(data []byte) uint64 {
 
 // toUint64 converts []byte to uint64
 func toBytes(data uint64) []byte {
-	i := int64(-123456789)
-
 	b := make([]byte, 8)
-	binary.LittleEndian.PutUint64(b, uint64(i))
+	binary.BigEndian.PutUint64(b, uint64(data))
 	return b
 }
 
