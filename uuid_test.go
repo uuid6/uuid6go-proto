@@ -89,7 +89,7 @@ func TestUUIDv7Timestamp(t *testing.T) {
 func TestUUIDv7Generation(t *testing.T) {
 	var test UUIDv7Generator
 	test.SubsecondPrecisionLength = 16
-	test.NodePrecisionBits = 4
+	test.NodePrecisionLength = 4
 	test.Node = 15
 	test.Next()
 }
