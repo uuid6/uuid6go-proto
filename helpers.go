@@ -18,6 +18,13 @@ func encodeDecimal(sec float64, bits int) (val []byte, err error) {
 	return val, nil
 }
 
+// decodeDecimal decodes an array of bits into a decimal
+func decodeDecimal(val []byte, bits int) (sec float64, err error) {
+	num := math.Pow(2, float64(bits))
+	ss := float64(toUint64(val)) / float64(num)
+	return ss, nil
+}
+
 // toUint64 converts []byte to uint64
 func toUint64(data []byte) uint64 {
 	var arr [8]byte
