@@ -109,6 +109,7 @@ func (u *UUIDv7Generator) Next() (uuid UUIDv7) {
 	//Use the below to test your counter
 	// precisitonBytes := []byte{0xff, 0xff}
 	if u.SubsecondPrecisionLength != 0 {
+		// fmt.Println("Nanos:", then.Nanosecond())
 		precisitonBytes, _ = encodeDecimal(float64(then.Nanosecond()), u.SubsecondPrecisionLength)
 	}
 
@@ -169,6 +170,38 @@ func (u *UUIDv7Generator) Next() (uuid UUIDv7) {
 	retval = retval.setBit(65, false)
 
 	return UUIDv7(retval)
+}
+
+//Parse finds the values for precisionSeconds, counter and node for a specified UUID on a specified generator.
+func (u *UUIDv7Generator) Parse(id *UUIDv7) (precisionSeconds float64, counter uint64, node uint64) {
+	ps := make([]byte, 8)
+	c := make([]byte, 8)
+	n := make([]byte, 8)
+
+	var j = 0
+	for i := 35 + u.SubsecondPrecisionLength; i > 35; i-- {
+		// fmt.Println("Subsecond precision:", j, absoluteIndexer(i), getBit(id[:], absoluteIndexer(i)))
+		setBit(ps, 63-j, getBit(id[:], absoluteIndexer(i)))
+		j++
+	}
+
+	j = 0
+	for i := 35 + u.SubsecondPrecisionLength + u.CounterPrecisionLength; i > 35+u.SubsecondPrecisionLength; i-- {
+		// fmt.Println("Counter precision:", j, absoluteIndexer(i), getBit(id[:], absoluteIndexer(i)))
+		setBit(c, 63-j, getBit(id[:], absoluteIndexer(i)))
+		j++
+
+	}
+
+	j = 0
+	for i := 35 + u.SubsecondPrecisionLength + u.CounterPrecisionLength + u.NodePrecisionLength; i > 35+u.SubsecondPrecisionLength+u.CounterPrecisionLength; i-- {
+		// fmt.Println("Node precision:", j, absoluteIndexer(i), getBit(id[:], absoluteIndexer(i)))
+		setBit(n, 63-j, getBit(id[:], absoluteIndexer(i)))
+		j++
+	}
+
+	precision, _ := decodeDecimal(ps[:], u.SubsecondPrecisionLength)
+	return precision, toUint64(c[:]), toUint64(n[:])
 }
 
 func (u UUIDv7) ToString() string {

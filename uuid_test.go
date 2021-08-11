@@ -91,5 +91,17 @@ func TestUUIDv7Generation(t *testing.T) {
 	test.SubsecondPrecisionLength = 16
 	test.NodePrecisionLength = 4
 	test.Node = 15
-	test.Next()
+	test.CounterPrecisionLength = 8
+	guid := test.Next()
+	test.Parse(&guid)
+	//ps, c, n := test.Parse(&guid)
+	// fmt.Println("binary", guid.ToBinaryString())
+	// fmt.Println("guid", guid.ToString())
+	// fmt.Print(ps, c, n)
+}
+
+func TestConverters(t *testing.T) {
+	// out, _ := encodeDecimal(209302800, 64)
+	// put, _ := decodeDecimal(out, 64)
+	// fmt.Print(out, put)
 }

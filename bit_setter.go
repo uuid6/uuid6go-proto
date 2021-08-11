@@ -21,6 +21,18 @@ func getBit(b []byte, index int) bool {
 	return (b[pos] & (uint8(1) << j)) != 0
 }
 
+// setBit sets the value of a bit at a specified positon in []byte
+func setBit(b []byte, index int, value bool) {
+	pos := index / 8
+	j := uint(index % 8)
+	j = 7 - j
+	if value {
+		b[pos] |= (uint8(1) << j)
+	} else {
+		b[pos] &= ^(uint8(1) << j)
+	}
+}
+
 // setBit sets the value of a bit at a specified positon in UUID
 func (b uuidBase) setBit(index int, value bool) uuidBase {
 	pos := index / 8
@@ -62,7 +74,6 @@ func absoluteIndexer(input int) int {
 	if input > 35+11 { //If we are bumbing into a ver block, skip it
 		out += 4
 	}
-
 	if input > 35+23 { //If we are bumping into a var block
 		out += 2
 	}
