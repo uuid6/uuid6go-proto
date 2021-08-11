@@ -90,8 +90,9 @@ func (b UUIDv7) stack(startingPosition int, value []byte, length int) (UUIDv7, i
 func (b uuidBase) stack(startingPosition int, value []byte, length int) (uuidBase, int) {
 	cnt := 0
 	for i := startingPosition; i < startingPosition+length; i++ {
-		bit := getBit(value, (len(value)*8-1)-cnt)
-		b = b.setBit(absoluteIndexer(i), bit)
+		curpos := (len(value)*8 - 1) - cnt
+		bit := getBit(value, curpos)
+		b = b.setBit(absoluteIndexer(startingPosition+length-cnt-1), bit)
 		cnt++
 	}
 	return b, startingPosition + length
